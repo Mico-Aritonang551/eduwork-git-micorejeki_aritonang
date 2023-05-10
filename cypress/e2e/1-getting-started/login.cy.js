@@ -6,17 +6,21 @@ describe('Writing with inputs',{ testIsolation: false },() => {
         cy.url().should('include', 'login.html')
     });
 
-    it('Sould fill username',() => {
-        cy.get('#user_login').clear()
-        cy.get('#user_login').type('username')
+    it('Should try to login', () => {
+        cy.fixture('user').then(user => {
+            const username = user.username
+            const password = user.password
+            cy.login(username,password) 
+        })
     });
 
-    it('Sould fill password', () => {
-        cy.get('input[name="user_password"]').clear()
-        cy.get('input[name="user_password"]').type('password')
-    });
-
-    it('Should fill check box', () => {
-        cy.get('#user_remember_me').check()
+    it('Should to paybill', () => {
+        cy.get('#pay_bills_tab').click()
+        cy.fixture('payment').then(payment => {
+            const amount = payment.amount
+            const date = payment.date
+            const description = payment.description
+            cy.pay(amount,date,description)
+        })
     })
 });
