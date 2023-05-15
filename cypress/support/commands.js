@@ -24,6 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+
 // /// <reference types="Cypress"/>
 
 // Cypress.Commands.add('login',(user) => {
@@ -68,3 +69,40 @@ Cypress.Commands.add('Checkout',(firstName, lastName, postalCode) => {
   cy.get('#postal-code').type(postalCode)
 })
   
+
+/// <reference types="cypress"/>
+
+Cypress.Commands.add('login',(username, password) => {
+    cy.clearCookies()
+    cy.clearLocalStorage()
+    cy.get('#user_login').clear()
+    cy.get('#user_login').type(username)
+    cy.get('#user_password').clear()
+    cy.get('#user_password').type(password)
+    cy.contains('Sign in').click()
+
+    cy.get('h2').should('contain.text', 'Cash Accounts')
+})
+
+/// <reference types="cypress" />
+
+Cypress.Commands.add('login', (username, password) => {
+    cy.clearCookies()
+    cy.clearLocalStorage()
+    cy.get('#user_login').type(username)
+    cy.get('#user_password').type(password)
+    cy.get('#user_remember_me').check()
+    cy.contains('Sign in').click()
+})
+
+Cypress.Commands.add('pay',(amount, date, description) => {
+    cy.clearCookies()
+    cy.clearLocalStorage()
+    cy.get('#sp_amount').type(amount)
+    cy.get('#sp_date').type(date).click()
+    cy.get('.ui-datepicker-days-cell-over > .ui-state-default').click()
+    cy.get('#sp_description').type(description)
+    cy.get('#pay_saved_payees').click()
+})
+
+
